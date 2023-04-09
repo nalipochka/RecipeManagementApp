@@ -1,7 +1,17 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using RecipeManagementApp.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<RecipeManagementContext>();
+
+string connectionString = builder.Configuration.GetConnectionString("RecipeManagement");
+builder.Services.AddDbContext<RecipeManagementContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
