@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RecipeManagementApp.AutoMapperProfiles;
 using RecipeManagementApp.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<RecipeManagementContext>();
+
+builder.Services.AddAutoMapper(typeof(UserProfiles));
 
 string connectionString = builder.Configuration.GetConnectionString("RecipeManagement");
 builder.Services.AddDbContext<RecipeManagementContext>(options => options.UseSqlServer(connectionString));

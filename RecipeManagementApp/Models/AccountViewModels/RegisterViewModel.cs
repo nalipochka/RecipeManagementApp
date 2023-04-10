@@ -19,6 +19,7 @@ namespace RecipeManagementApp.Models.ViewModels
         public string Login { get; set; } = default!;
         [Required]
         [DisplayName("eMail")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }= default!;
         [Required]
         [DisplayName("Password")]

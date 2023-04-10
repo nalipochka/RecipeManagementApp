@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecipeManagementApp.Context.Data;
 using System;
+using RecipeManagementApp.Models.UserViewModel;
 
 namespace RecipeManagementApp.Context
 {
