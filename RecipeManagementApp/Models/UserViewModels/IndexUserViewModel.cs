@@ -1,27 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
-namespace RecipeManagementApp.Models.UserViewModel
+namespace RecipeManagementApp.Models.UserViewModels
 {
-    public class DeleteUserViewModel
+    public class IndexUserViewModel
     {
         [Required]
         public string Id { get; set; } = default!;
+
         [Required]
-        [DisplayName("Name")]
+        [Display(Name = "Name")]
         public string FirstName { get; set; } = default!;
         [Required]
-        [DisplayName("Surname")]
+        [Display(Name = "Surname")]
         public string LastName { get; set; } = default!;
         [Required]
-        [DisplayName("Date of birth")]
+        [Display(Name = "Login")]
+        public string Login { get; set; } = default!;
+
+        [Required]
+        [Display(Name = "Date of birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
+
         [Required]
-        [DisplayName("Login")]
-        public string Login { get; set; } = default!;
-        [Required]
-        [DisplayName("eMail")]
+        [Display(Name = "eMail")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = default!;
     }
