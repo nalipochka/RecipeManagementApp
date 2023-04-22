@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeManagementApp.Context;
 using RecipeManagementApp.Models.UserViewModels;
+using System.Data;
 
 namespace RecipeManagementApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UserController : Controller
     {
         private readonly UserManager<User> userManager;
@@ -187,10 +190,17 @@ namespace RecipeManagementApp.Controllers
             }
             IList<string> userRoles = await userManager.GetRolesAsync(user);
             List<IdentityRole> allRole = await roleManager.Roles.ToListAsync();
-            ChangeRoleViewModel vM = mapper.Map<ChangeRoleViewModel>(user);
-            vM.AllRoles = allRole;
-            vM.UserRoles = userRoles;
-            return View(vM);
+            //ChangeRoleViewModel vM = mapper.Map<ChangeRoleViewModel>(user);
+            //vM.AllRoles = allRole;
+            //vM.UserRoles = userRoles;
+            ChangeRoleViewModel vM = new ChangeRoleViewModel
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                AllRoles = allRole,
+                UserRoles = userRoles
+            };
+             return View(vM);
         }
 
         [HttpPost]
@@ -202,7 +212,7 @@ namespace RecipeManagementApp.Controllers
                 return NotFound();
             }
             User user = await userManager.FindByIdAsync(id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }

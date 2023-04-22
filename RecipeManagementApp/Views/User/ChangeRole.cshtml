@@ -4,7 +4,7 @@
 <h1>Change Roles for User @Model.UserName</h1>
 
 <form asp-action="ChangeRole" method="post" class="mb-3">
-    <input type="hidden" value="@Model.Id" />
+    <input type="hidden" value="@Model.UserId" />
     @foreach (var role in Model.AllRoles)
     {
             @*<input type="checkbox" name="roles" @(Model.UserRoles.Contains(role.Name) ? "checked": "") value="@role.Name"/>*@

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecipeManagementApp.Context;
+using System.Data;
 
 namespace RecipeManagementApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class RoleController : Controller
     {
         private readonly UserManager<User> userManager;
@@ -15,6 +18,7 @@ namespace RecipeManagementApp.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
+      
         public async Task<IActionResult> Index()
         {
             return View(await roleManager.Roles.ToListAsync());
