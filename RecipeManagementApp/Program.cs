@@ -16,6 +16,11 @@ builder.Services.AddAutoMapper(typeof(UserProfiles));
 string connectionString = builder.Configuration.GetConnectionString("RecipeManagement");
 builder.Services.AddDbContext<RecipeManagementContext>(options => options.UseSqlServer(connectionString));
 
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin"));
+//});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,8 +36,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

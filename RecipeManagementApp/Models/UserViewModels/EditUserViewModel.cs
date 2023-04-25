@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace RecipeManagementApp.Models.UserViewModel
+namespace RecipeManagementApp.Models.UserViewModels
 {
     public class EditUserViewModel
     {

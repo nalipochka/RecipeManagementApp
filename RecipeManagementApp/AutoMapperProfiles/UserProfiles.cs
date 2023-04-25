@@ -1,5 +1,5 @@
 ﻿using RecipeManagementApp.Context;
-using RecipeManagementApp.Models.UserViewModel;
+using RecipeManagementApp.Models.UserViewModels;
 using AutoMapper;
 
 namespace RecipeManagementApp.AutoMapperProfiles
@@ -12,6 +12,8 @@ namespace RecipeManagementApp.AutoMapperProfiles
             CreateMap<User, EditUserViewModel>().ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.UserName)).ReverseMap();
             CreateMap<User, DeleteUserViewModel>().ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.UserName)).ReverseMap();
             CreateMap<User, ChangePasswordUserViewModel>().ReverseMap();
+            CreateMap<User, ChangeRoleViewModel>().ReverseMap();
+
         }
     }
 }

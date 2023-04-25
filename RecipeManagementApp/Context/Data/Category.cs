@@ -13,10 +13,10 @@ namespace RecipeManagementApp.Context.Data
 
         public int? ParentCategoryId { get; set; }
 
-        public virtual Category ParentCategory { get; set; } = null!;
+        public virtual Category? ParentCategory { get; set; } = null!;
 
-        public virtual ICollection<Category> ChildCategories { get; set; } = null!;
+        public virtual ICollection<Category>? ChildCategories { get; set; } = null!;
 
-        public virtual ICollection<Recipe> Recipes { get; set; } = null!;
+        public virtual ICollection<Recipe>? Recipes { get; set; } = null!;
     }
 }

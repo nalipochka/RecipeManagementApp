@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace RecipeManagementApp.Models.UserViewModel
+namespace RecipeManagementApp.Models.UserViewModels
 {
-    public class CreateUserViewModel
+    public class DeleteUserViewModel
     {
+        [Required]
+        public string Id { get; set; } = default!;
         [Required]
         [DisplayName("Name")]
         public string FirstName { get; set; } = default!;
@@ -12,20 +14,15 @@ namespace RecipeManagementApp.Models.UserViewModel
         [DisplayName("Surname")]
         public string LastName { get; set; } = default!;
         [Required]
-        [DisplayName("Login")]
-        public string Login { get; set; } = default!;
-        [Required]
         [DisplayName("Date of birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-      
+        [Required]
+        [DisplayName("Login")]
+        public string Login { get; set; } = default!;
         [Required]
         [DisplayName("eMail")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = default!;
-        [Required]
-        [DisplayName("Password")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; } = default!;
     }
 }

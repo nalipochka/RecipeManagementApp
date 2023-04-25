@@ -1,20 +1,26 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RecipeManagementApp.Context;
-using RecipeManagementApp.Models.UserViewModel;
+using RecipeManagementApp.Models.UserViewModels;
+using System.Data;
 
 namespace RecipeManagementApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UserController : Controller
     {
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public UserController(UserManager<User> userManager, IMapper mapper)
+        public UserController(UserManager<User> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.mapper = mapper;
+            this.roleManager = roleManager;
         }
         public IActionResult Index()
         {
@@ -142,7 +148,7 @@ namespace RecipeManagementApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordUserViewModel vM)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 User user = await userManager.FindByIdAsync(vM.Id);
                 if (user == null)
@@ -150,12 +156,12 @@ namespace RecipeManagementApp.Controllers
                     return NotFound();
                 }
                 var passwordValidator = HttpContext.RequestServices.GetRequiredService<IPasswordValidator<User>>();
-                var passwordHasher= HttpContext.RequestServices.GetRequiredService<IPasswordHasher<User>>();
+                var passwordHasher = HttpContext.RequestServices.GetRequiredService<IPasswordHasher<User>>();
                 var identityResult = await passwordValidator.ValidateAsync(userManager, user, vM.NewPassword);
-                if(identityResult.Succeeded)
+                if (identityResult.Succeeded)
                 {
-                    string hashedPassword = passwordHasher.HashPassword(user,vM.NewPassword);
-                    user.PasswordHash= hashedPassword;
+                    string hashedPassword = passwordHasher.HashPassword(user, vM.NewPassword);
+                    user.PasswordHash = hashedPassword;
                     await userManager.UpdateAsync(user);
                     return RedirectToAction("Index", "User");
                 }
@@ -169,6 +175,53 @@ namespace RecipeManagementApp.Controllers
                 }
             }
             return View(vM);
+        }
+
+        public async Task<IActionResult> ChangeRole(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            User user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            IList<string> userRoles = await userManager.GetRolesAsync(user);
+            List<IdentityRole> allRole = await roleManager.Roles.ToListAsync();
+            //ChangeRoleViewModel vM = mapper.Map<ChangeRoleViewModel>(user);
+            //vM.AllRoles = allRole;
+            //vM.UserRoles = userRoles;
+            ChangeRoleViewModel vM = new ChangeRoleViewModel
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                AllRoles = allRole,
+                UserRoles = userRoles
+            };
+             return View(vM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeRole(string? id, List<string> roles)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            User user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            IList<string> userRoles = await userManager.GetRolesAsync(user);
+            IEnumerable<string> addedRoles = roles.Except(userRoles);
+            IEnumerable<string> deletedRoles = userRoles.Except(roles);
+            await userManager.AddToRolesAsync(user, addedRoles);
+            await userManager.RemoveFromRolesAsync(user, deletedRoles);
+            return RedirectToAction("Index", "User");
         }
     }
 }
