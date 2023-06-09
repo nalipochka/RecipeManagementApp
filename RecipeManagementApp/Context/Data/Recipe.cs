@@ -26,7 +26,7 @@ namespace RecipeManagementApp.Context.Data
 
         [Required]
         [ForeignKey("User")]
-        public string? AuthorId { get; set; }
+        public string AuthorId { get; set; } = null!;
         public virtual User Author { get; set; } = null!;
 
         public int RatingSum { get; set; } // сума всіх оцінок

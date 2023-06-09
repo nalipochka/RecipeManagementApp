@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RecipeManagementApp.Context;
@@ -7,6 +8,7 @@ using RecipeManagementApp.Models.CategoriesViewModels;
 
 namespace RecipeManagementApp.Controllers
 {
+    //[Authorize(Roles ="admin")]
     public class CategoriesController : Controller
     {
         private readonly RecipeManagementContext context;
